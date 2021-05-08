@@ -1,87 +1,95 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 public class PROGRAMMERS72412 {
+	static int answer[];
+	static int index = 0;
+    static HashMap<Integer, String> hm = new HashMap<>();
 	public static void main(String[] args) {
 		String[] info = {"java backend junior pizza 150","python frontend senior chicken 210","python frontend senior chicken 150","cpp backend senior pizza 260","java backend junior chicken 80","python backend senior chicken 50"};
 		String[] query = {"java and backend and junior and pizza 100","python and frontend and senior and chicken 200","cpp and - and senior and pizza 250","- and backend and senior and - 150","- and - and - and chicken 100","- and - and - and - 150"};
-		
-		String lang[] = {"cpp", "java", "python"};
-		String dep[] = {"backend", "frontend"};
-		String exp[] = {"junior", "senior"};
-		String food[] = {"chicken", "pizza"};
-		
-		
-		HashMap<String, HashMap<String, HashMap<String, HashMap<String, ArrayList<Integer>>>>> hm = new HashMap<>();
-		
-		for(String str : lang) {
-			hm.put(str, new HashMap<>());
-		}
-		for(String l : hm.keySet()) {
-			HashMap<String, HashMap<String, HashMap<String, ArrayList<Integer>>>> lhm = hm.get(l);
-			for(String d: dep) 
-				lhm.put(d, new HashMap<>());
-			for(String d: lhm.keySet()) {
-				HashMap<String, HashMap<String, ArrayList<Integer>>> dhm = lhm.get(d);
-				for(String e : exp)
-					dhm.put(e, new HashMap<>());
-				for(String e: dhm.keySet()) {
-					HashMap<String, ArrayList<Integer>> ehm = dhm.get(e);
-					for(String f: food)
-						ehm.put(f, new ArrayList<>());
-				}
+		answer = new int[query.length];
+        hm.put(0, "cpp java python");
+        hm.put(1, "backend frontend");
+        hm.put(2, "junior senior");
+        hm.put(3, "chicken pizza");
+        
+        Node root = new Node();
+        
+        for(String s : info) { 
+            insert(root, s); 
+        }
+        
+        for(String s : query) { 
+            check(root, s, 0);
+            index++;
+        } 
+                
+        for(int i: answer) {
+        	System.out.println(i);
+        }
+        //return answer;
+    } 
+	
+    static void check(Node cur, String s, int ind) {
+        String str[] = s.split(" and ");
+        String temp[] = str[3].split(" ");
+        str[3] = temp[0];
+        int score = Integer.parseInt(temp[1]);
 
-			}
+        if(ind == 4){
+            ArrayList<Integer> result = cur.score;
+            Collections.sort(result);
 
-		}
+            int start = 0;
+            int end = result.size();
 
-		int[] answer = new int[query.length];
+            
+            while (start < end) {
+                int mid = (start + end) / 2;
+                if(result.get(mid) < score) {
+                    start = mid + 1;
+                }else {
+                    end = mid;
+                }
+            }
 
-		for(String str : info) {
-			String people[] = str.split(" ");
-			hm.get(people[0]).get(people[1]).get(people[2]).get(people[3]).add(Integer.parseInt(people[4]));
-		}
-
-		for (HashMap<String, HashMap<String, HashMap<String, ArrayList<Integer>>>> d : hm.values())
-            for (HashMap<String, HashMap<String, ArrayList<Integer>>> e : d.values())
-                for (HashMap<String, ArrayList<Integer>> f : e.values())
-                    for (ArrayList<Integer> s : f.values())
-                        s.sort(null);
-		
-		
-		for(int i = 0; i < query.length; i++) {
-			String str[] = query[i].split(" and ");
-			String temp[] = str[3].split(" ");
-			int score = Integer.parseInt(temp[1]);
-			
-			for(String l : lang) {
-				if(str[0].equals("-") || str[0].equals(l)) {
-					for(String d: dep) {
-						if(str[1].equals("-") || str[1].equals(d)) {
-							for(String e: exp) {
-								if(str[2].equals("-") || str[2].equals(e)) {
-									for(String f : food) {
-										if(temp[0].equals("-") || temp[0].equals(f)) {
-											 ArrayList<Integer> result = hm.get(l).get(d).get(e).get(f);
-											 for(Integer num: result) {
-												 if(score <= num) {
-													 answer[i]++;
-												 }
-											 }
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}	
-		} 
-		
-		
-		for(int i = 0; i < answer.length; i++) {
-			System.out.println(answer[i]);
-		}
-	}
+            answer[index] += result.size() - start;
+            
+            return;
+        }else {
+        	if(str[ind].equals("-")) {
+                String t[] = hm.get(ind).split(" ");
+                for(String next : t) {
+                	if(cur.children.containsKey(next)) check(cur.children.get(next), s, ind+1);
+                }
+            }else {
+            	if(cur.children.containsKey(str[ind])) check(cur.children.get(str[ind]), s, ind+1);
+            }
+        }
+    }
+    
+    static void insert(Node cur, String s) {
+        String str[] = s.split(" ");
+        
+        for(int i = 0; i < str.length; i++) {
+            if(i == 4){
+                cur.score.add(Integer.parseInt(str[4]));
+            }else {
+                cur = cur.children.computeIfAbsent(str[i], l -> new Node());
+            }
+        }
+    }
+    
+    static class Node{ 
+        Map<String, Node> children; 
+        ArrayList<Integer> score;
+        
+        Node() { 
+            children = new HashMap<>();
+            score = new ArrayList<>();
+        }
+    } 
 }
