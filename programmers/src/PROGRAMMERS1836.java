@@ -55,16 +55,10 @@ public class PROGRAMMERS1836 {
 	
 	static boolean bfs(int m, int n, int ind) {
 		Queue<coordinate> q = new LinkedList<>();
-		boolean visited[][][] = new boolean[m][n][4];
 		q.add(new coordinate(al[ind].get(0).x, al[ind].get(0).y, 0, 0));
 		q.add(new coordinate(al[ind].get(0).x, al[ind].get(0).y, 1, 0));
 		q.add(new coordinate(al[ind].get(0).x, al[ind].get(0).y, 2, 0));
 		q.add(new coordinate(al[ind].get(0).x, al[ind].get(0).y, 3, 0));
-		visited[al[ind].get(0).x][al[ind].get(0).y][0] = true;
-		visited[al[ind].get(0).x][al[ind].get(0).y][1] = true;
-		visited[al[ind].get(0).x][al[ind].get(0).y][2] = true;
-		visited[al[ind].get(0).x][al[ind].get(0).y][3] = true;
-		
 		
 		while(!q.isEmpty()) {
 			coordinate cur = q.poll();
@@ -83,12 +77,10 @@ public class PROGRAMMERS1836 {
 				int ty = dy[i] + cur.y;
 				
 				if(tx < 0 || m <= tx || ty < 0 || n <= ty) continue;
-				if(visited[tx][ty][i]) continue;
 				if(map[tx][ty] == '*') continue; 
 				if(map[tx][ty] == '.' || map[tx][ty] == map[al[ind].get(0).x][al[ind].get(0).y]) {
 					if(cur.dir == i) q.add(new coordinate(tx, ty, i, cur.count));
 					else q.add(new coordinate(tx, ty, i, cur.count+1));
-					visited[tx][ty][i] = true;
 				}
 				
 				
