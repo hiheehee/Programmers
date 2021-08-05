@@ -1,9 +1,7 @@
-
 public class PROGRAMMERS72410 {
 
-	public static void main(String[] args) {
-		String new_id = "=.=";
-		String answer = "";
+	public String solution(String new_id) {
+        String answer = "";
 		
 		// 1단계 new_id의 모든 대문자를 대응되는 소문자로 치환합니다.
 		new_id = new_id.toLowerCase();
@@ -51,7 +49,7 @@ public class PROGRAMMERS72410 {
 			}
 		}
 		
-		System.out.print(answer);
+		return answer;
 	}
 
 }
