@@ -2,11 +2,9 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 
-public class PROGRAMMERS81302 {
-
-	static int dxy[][] = {{-1,0},{1,0},{0,-1},{0,1}};
-	public static void main(String[] args) {
-		String[][] places = {{"POOOP", "OXXOX", "OPXPX", "OOXOX", "POXXP"}, {"POOPX", "OXPXP", "PXXXO", "OXXXO", "OOOPP"}, {"PXOPX", "OXOXP", "OXPOX", "OXXOP", "PXPOX"}, {"OOOXX", "XOOOX", "OOOXX", "OXOOX", "OOOOO"}, {"PXPXP", "XPXPX", "PXPXP", "XPXPX", "PXPXP"}};
+class PROGRAMMERS81302 {
+    static int dxy[][] = {{-1,0},{1,0},{0,-1},{0,1}};
+    public int[] solution(String[][] places) {
 		int[] answer = new int[5];
         
 		for(int i = 0; i < 5; i++)
@@ -23,11 +21,8 @@ public class PROGRAMMERS81302 {
             }
             
         }
-        
-        for(int i:answer) {
-        	System.out.println(i);
-        }
-        //return answer;
+
+        return answer;
     }
     
     static ArrayList<coordinate> count(char map[][]){
