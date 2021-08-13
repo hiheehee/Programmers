@@ -77,7 +77,7 @@ public class PROGRAMMERS81303 {
 		    
 		    return sb.toString();
 	}
-		
+	
 	static class Node {
 		Node prev;
 		Node next;
